@@ -2,11 +2,15 @@ package com.example.bankapp.controller;
 
 import com.example.bankapp.dto.TransferRequest;
 import com.example.bankapp.exception.BankException;
+import com.example.bankapp.model.BankTransaction;
 import com.example.bankapp.model.Customer;
 import com.example.bankapp.service.BankService;
 import com.example.bankapp.service.TransactionAuditService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -18,9 +22,35 @@ import java.math.BigDecimal;
 @RequiredArgsConstructor
 public class BankController {
 
+        @GetMapping("/bank")
+    public String bankHomePage() {
+        return "index";}
+
     private final BankService bankService;
     private final TransactionAuditService auditService;
 
+    @RestController
+@RequestMapping("/api/transfers")
+public class TransferRestController {
+
+    @Autowired
+    private BankService bankService;
+
+    @PostMapping
+    public ResponseEntity<?> transferMoney(@RequestBody TransferRequest request) {
+        try {
+            BankTransaction transaction = bankService.transfer(
+                request.getFromAccount(),
+                request.getToAccount(),
+                request.getAmount(),
+                request.isSimulateFailure()
+            );
+            return ResponseEntity.ok(transaction);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+}
     // Dashboard
     @GetMapping("/")
     public String dashboard(
