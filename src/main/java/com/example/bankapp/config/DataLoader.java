@@ -2,11 +2,11 @@ package com.example.bankapp.config;
 
 import com.example.bankapp.model.Customer;
 import com.example.bankapp.repository.CustomerRepository;
+import java.math.BigDecimal;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
-import java.math.BigDecimal;
-import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -14,6 +14,9 @@ public class DataLoader implements CommandLineRunner {
 
     private final CustomerRepository customerRepository;
 
+    /**
+     * Inserts sample customer data when the application starts with an empty database.
+     */
     @Override
     public void run(String... args) {
 

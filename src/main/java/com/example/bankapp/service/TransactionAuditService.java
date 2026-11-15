@@ -9,6 +9,7 @@ import com.example.bankapp.model.BankTransaction;
 import com.example.bankapp.model.TransactionStatus;
 import com.example.bankapp.repository.BankTransactionRepository;
 
+
 /**
  * Saves a FAILED record after a transfer was rolled back.
  * REQUIRES_NEW = always start a brand-new, independent transaction,
@@ -18,7 +19,7 @@ import com.example.bankapp.repository.BankTransactionRepository;
 @RequiredArgsConstructor
 public class TransactionAuditService {
 
-    private final BankTransactionRepository transactionRepository;
+        private final BankTransactionRepository transactionRepository;
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void recordFailure(
@@ -36,5 +37,6 @@ public class TransactionAuditService {
         );
 
         transactionRepository.save(transaction);
-    }
+    } 
+
 }
